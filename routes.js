@@ -1,7 +1,7 @@
 const routes = {
     '#/main': { path: 'main.html', name: 'Главная' },
     '#/dicom': { path: 'dicom.html', name: 'Коллекция' },
-	'#/code.html': { path: 'code.html', name: 'Code' },
+	'#/code': { path: 'code.html', name: 'Code' },
 };
 
 // DOM-элементы
@@ -201,6 +201,7 @@ window.addEventListener('DOMContentLoaded', () => {
     handleHashChange();
 });
 window.addEventListener('hashchange', handleHashChange);
+
 
 
 
