@@ -1,6 +1,6 @@
 const routes = {
-    '#/main': { path: 'main.html', name: 'Главная' },
-    '#/dicom': { path: 'dicom.html', name: 'Коллекция' },
+    '#/main': { path: '/main.html', name: 'Главная' },
+    '#/dicom': { path: '/dicom.html', name: 'Коллекция' },
 };
 
 // DOM-элементы
@@ -24,7 +24,7 @@ const loadedStyles = new Set();
  */
 function createStaticMenu() {
     menuDiv.innerHTML = `
-        <img id="logo" src="img/logo.jpg" alt="Логотип сайта">
+        <img id="logo" src="/img/logo.jpg" alt="Логотип сайта">
         <nav>
             <ul>
                 ${Object.keys(routes).map(path => `
@@ -41,12 +41,7 @@ function createStaticMenu() {
  */
 function createStaticFooter() {
     footerDiv.innerHTML = `
-        <!-- Top.Mail.Ru logo -->
-        <a href="https://top-fwz1.mail.ru/jump?from=3617624">
-            <img src="https://top-fwz1.mail.ru/counter?id=3617624;t=479;l=1" height="31" width="88" alt="Top.Mail.Ru" style="border:0;" />
-        </a>
-        <!-- /Top.Mail.Ru logo -->
-        <p>&copy; 2025 Наш сайт. Все права защищены.</p>
+        <p>&copy; 2025 Radiographia. Все права защищены.</p>
     `;
 }
 
@@ -205,4 +200,3 @@ window.addEventListener('DOMContentLoaded', () => {
     handleHashChange();
 });
 window.addEventListener('hashchange', handleHashChange);
-
