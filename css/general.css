@@ -1,0 +1,147 @@
+/* Сброс отступов */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+        @font-face {
+            font-family: 'FontContent';
+            src: url('/fonts/RobotoFlex-Regular.ttf') format('truetype');
+        }
+
+
+
+html {
+overflow-y: scroll; /* Всегда показываем вертикальную полосу прокрутки	*/
+}
+
+html, body {
+
+    margin: 0;
+    padding: 0;
+
+	/*width: 100%;
+    height: 100%;*/
+	
+	font-family: 'FontContent', sans-serif;
+	/*text-align: center;*/
+	/*background: rgba(0,0,0);*/
+}
+
+body {
+	display: flex;
+    flex-direction: column;
+	/*min-height: 100vh;*/
+	height: 100vh;
+
+}
+
+#content {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	/*height: auto;*/
+	
+	
+/*			  align-items: center;
+ justify-content: center;
+ /*align-items: center;*/
+ 
+	
+		
+}
+
+
+
+
+#content.hidden {
+    opacity: 0;
+    pointer-events: none; /* Блокируем взаимодействие, пока скрыто */
+	
+	
+}
+
+
+#menu {
+	position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    background-color: rgba(0, 0, 0);
+    flex-wrap: wrap; /* Разрешаем перенос */
+	/*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+}
+
+#logo {
+    width: 50px; /* Явная ширина для логотипа */
+    height: 50px;
+    margin-right: 20px;
+	/*filter: invert(1);*/
+}
+
+
+#menu .fake {
+	
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,0, 0, 0.25); /* Второй цвет */
+    /*mix-blend-mode: screen;*/
+    pointer-events: none; /* Позволяет клики через слой */
+	
+}
+
+nav ul {
+    display: flex;
+    /*list-style: none; /* Убираем маркеры списка */
+    gap: 15px; /* Пространство между элементами */
+    flex-wrap: wrap; /* Разрешаем перенос элементов */
+}
+
+nav li a {
+    text-decoration: none; /* Убираем подчеркивание */
+    /*color: #000;*/
+    padding: 5px 10px;
+    border-radius: 3px;
+	color: #fff;
+	/*background-color: rgba(255, 255, 255, .5);*/
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Стили для активного пункта меню */
+nav li a.active {
+    background-color: rgba(255, 255, 255, .5);
+    color: #fff; /* Белый текст */
+    font-weight: bold;
+}
+
+/* Ховер-эффект */
+nav li a:hover {
+    background-color: rgba(255, 255, 255, .5);
+    color: #fff;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 20px;
+    flex-basis: 100%; /* Заголовок занимает всю ширину строки */
+    text-align: center;
+}
+
+#footer {
+    display: flex;
+    flex-direction: column; /* Размещаем элементы в колонку */
+    align-items: center; /* Центрируем по горизонтали */
+    justify-content: center; /* Центрируем по вертикали */
+    width: 100%;
+    padding: 20px;
+    background-color: #f8f8f8; /* Светлый фон */
+    border-top: 1px solid #ddd; /* Легкая граница сверху */
+    font-size: 14px;
+    color: #333;
+	text-align: center;
+}
