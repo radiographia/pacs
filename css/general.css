@@ -108,6 +108,7 @@ body {
 nav {z-index: 3;}
 nav ul {
     display: flex;
+	list-style: none;
     /*list-style: none; /* Убираем маркеры списка */
     gap: 15px; /* Пространство между элементами */
     flex-wrap: wrap; /* Разрешаем перенос элементов */
@@ -157,6 +158,7 @@ h1 {
 	text-align: center;
 
 }
+
 
 
 
