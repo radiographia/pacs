@@ -82,11 +82,16 @@ body {
 	/*filter: invert(1);*/
 	z-index: 2;
 }
-
+#rad {
+	color: rgba(255, 255, 255, .25);
+	font-size: 2em;
+	font-weight: bold;
+}
 
 #menu .fake {
 	
     position: absolute;
+	display: flex;
     top: 0;
     left: 0;
     width: 100%;
@@ -94,6 +99,8 @@ body {
     background: rgba(255,0, 0, 0.25); /* Второй цвет */
     /*mix-blend-mode: screen;*/
     pointer-events: none; /* Позволяет клики через слой */
+	justify-content: center;
+	align-items: center;
 	z-index: 1;
 	
 }
@@ -150,5 +157,6 @@ h1 {
 	text-align: center;
 
 }
+
 
 
