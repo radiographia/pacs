@@ -31,7 +31,7 @@
 - Возможность роста и публикаций в области медицинских технологий  
 
 ### Контакты
-- VK: [Юрий Мольгачёв](https://vk.com/yury_molgachev)  
+- VK: [Юрий Молгачёв](https://vk.com/yury_molgachev)  
 - Онлайн-штаб-квартира: [Radiographia на Yougile](https://radiographia.yougile.com/)  
 
 ---
