@@ -1,6 +1,6 @@
 const routes = {
-    '#/main': { path: '/main.html', name: 'Главная' },
-    '#/dicom': { path: '/dicom.html', name: 'Коллекция' },
+    '#/main': { path: 'main.html', name: 'Главная' },
+    '#/dicom': { path: 'dicom.html', name: 'Коллекция' },
 };
 
 // DOM-элементы
@@ -24,7 +24,7 @@ const loadedStyles = new Set();
  */
 function createStaticMenu() {
     menuDiv.innerHTML = `
-        <img id="logo" src="/img/logo.jpg" alt="Логотип сайта">
+        <img id="logo" src="img/logo.jpg" alt="Логотип сайта">
         <nav>
             <ul>
                 ${Object.keys(routes).map(path => `
@@ -205,3 +205,4 @@ window.addEventListener('DOMContentLoaded', () => {
     handleHashChange();
 });
 window.addEventListener('hashchange', handleHashChange);
+
