@@ -33,7 +33,9 @@ function createStaticMenu() {
                 `).join('')}
             </ul>
         </nav>
-        <div class="fake"></div>
+        <div class="fake">
+		<div id="rad">RADIOGRAPHIA</div>
+		</div>
     `;
 }
 
@@ -201,6 +203,7 @@ window.addEventListener('DOMContentLoaded', () => {
     handleHashChange();
 });
 window.addEventListener('hashchange', handleHashChange);
+
 
 
 
