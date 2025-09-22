@@ -31,7 +31,7 @@ header > * {
 
         main {
 			margin: 0px;
-            padding: 20px;
+            padding: 0px;
 			height: 100%
             /*max-width: 800px;*/
             margin: 0px auto;
@@ -45,6 +45,7 @@ header > * {
     padding-left: 20px;
 
 }
+
 
 
 
