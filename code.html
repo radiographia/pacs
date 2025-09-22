@@ -1,0 +1,28 @@
+<body>
+<pre><code>
+import fs from fs;
+import fetch from node - fetch;
+async function uploadDicomToOrthanc() {
+    const dicomPath = /mnt/DICOM_ARCHIVE/input/00000100;  // путь в VM
+    const dicomData = fs.readFileSync(dicomPath);
+    const response = await fetch(http://localhost:8042/instances, {
+        method: POST,
+        headers: {
+            Authorization: Basic + Buffer.from(orthanc: orthanc).toString(base64),
+            Content- Type: application / dicom
+      },
+body: dicomData
+    });
+if (response.ok) {
+    const instanceId = await response.text();
+    console.log(DICOM загружен, ID:, instanceId);
+} else {
+    console.error(Ошибка загрузки:, response.status, response.statusText);
+}
+  }
+uploadDicomToOrthanc();
+
+
+    </code></pre>
+
+    </body>
