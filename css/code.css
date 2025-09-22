@@ -3,7 +3,7 @@
 			position: relative;
             background: rgba(0,0,0);
             padding: 10px 20px;
-	color: rgba(0, 0, 0);
+	color: rgba(255, 255, 255);
 	/*z-index: 1;*/
             text-align: center;
         }
@@ -11,12 +11,12 @@
 header::before {
 	content: '';
     position: absolute;
-	color: white;
+	
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 0, 0, 0.5); /* Второй цвет */
+    background: rgba(255, 0, 0, 0.35); /* Второй цвет */
 	/*background: linear-gradient(to right, rgba(0, 255, 0, 0.25), rgba(255, 255, 0, 0.5));*/
     /*mix-blend-mode: screen;*/
 	z-index: 2;
@@ -45,5 +45,6 @@ header > * {
     padding-left: 20px;
 
 }
+
 
 
