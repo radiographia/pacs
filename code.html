@@ -15,29 +15,108 @@
     <div id="content">
 	<main>
 <pre><code>
-import fs from fs;
-import fetch from node - fetch;
-async function uploadDicomToOrthanc() {
-    const dicomPath = /mnt/DICOM_ARCHIVE/input/00000100;  // путь в VM
-    const dicomData = fs.readFileSync(dicomPath);
-    const response = await fetch(http://localhost:8042/instances, {
-        method: POST,
-        headers: {
-            Authorization: Basic + Buffer.from(orthanc: orthanc).toString(base64),
-            Content- Type: application / dicom
-      },
-body: dicomData
-    });
-if (response.ok) {
-    const instanceId = await response.text();
-    console.log(DICOM загружен, ID:, instanceId);
-} else {
-    console.error(Ошибка загрузки:, response.status, response.statusText);
+import fs from 'fs';
+import fetch from 'node-fetch';
+import path from 'path';
+
+class DicomUploader {
+    constructor(orthancConfig = {}) {
+        this.baseUrl = orthancConfig.url || 'http://localhost:8042';
+        this.username = orthancConfig.username || 'orthanc';
+        this.password = orthancConfig.password || 'orthanc';
+        this.credentials = Buffer.from(`${this.username}:${this.password}`).toString('base64');
+    }
+    
+    async uploadSingleFile(filePath) {
+        const fileName = path.basename(filePath);
+        console.log(`Загружаем файл: ${fileName}`);
+        
+        if (!fs.existsSync(filePath)) {
+            throw new Error(`Файл не найден: ${filePath}`);
+        }
+        
+        const dicomData = fs.readFileSync(filePath);
+        const url = `${this.baseUrl}/instances`;
+        
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Basic ${this.credentials}`,
+                    'Content-Type': 'application/dicom'
+                },
+                body: dicomData
+            });
+            
+            if (response.ok) {
+                const instanceId = await response.text();
+                console.log(`✓ Файл "${fileName}" загружен. ID: ${instanceId}`);
+                return { success: true, id: instanceId, file: fileName };
+            } else {
+                const errorText = await response.text();
+                console.error(`✗ Ошибка ${response.status}: ${response.statusText}`);
+                console.error('Ответ Orthanc:', errorText);
+                return { 
+                    success: false, 
+                    status: response.status, 
+                    error: response.statusText,
+                    file: fileName 
+                };
+            }
+        } catch (error) {
+            console.error(`✗ Исключение при загрузке ${fileName}:`, error.message);
+            return { 
+                success: false, 
+                error: error.message, 
+                file: fileName 
+            };
+        }
+    }
+    
+    async uploadDirectory(dirPath, filter = /\.dcm$|\.dicom$/i) {
+        const files = fs.readdirSync(dirPath)
+            .filter(file => filter.test(file))
+            .map(file => path.join(dirPath, file));
+        
+        console.log(`Найдено файлов для загрузки: ${files.length}`);
+        
+        const results = [];
+        for (const filePath of files) {
+            const result = await this.uploadSingleFile(filePath);
+            results.push(result);
+            
+            // Пауза между загрузками (опционально)
+            if (result.success) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+        }
+        
+        const successful = results.filter(r => r.success);
+        const failed = results.filter(r => !r.success);
+        
+        console.log(`\n=== РЕЗУЛЬТАТЫ ===`);
+        console.log(`Успешно: ${successful.length}/${files.length}`);
+        if (failed.length > 0) {
+            console.log(`Ошибки (${failed.length}):`);
+            failed.forEach(f => console.log(`  - ${f.file}: ${f.error}`));
+        }
+        
+        return { successful, failed, total: results.length };
+    }
 }
-  }
-uploadDicomToOrthanc();
 
+// Использование
+const uploader = new DicomUploader({
+    url: 'http://localhost:8042',
+    username: 'orthanc',
+    password: 'orthanc'
+});
 
+// Загрузка одного файла
+uploader.uploadSingleFile('/mnt/DICOM_ARCHIVE/input/00000100.dcm');
+
+// Загрузка всей папки
+uploader.uploadDirectory('/mnt/DICOM_ARCHIVE/input/');
     </code></pre>
     </main>
     </body>
