@@ -18,49 +18,6 @@
     <div id="menu"></div>
     <div id="content"></div>
 	<div id="footer"></div>
-	<div id="counter">
-
-	<script>
-        // Конфигурация CounterAPI
-        const WORKSPACE = 'radiographia-site';  // Ваш workspace из дашборда
-        const COUNTER_NAME = 'page-views-2025';  // Имя вашего счётчика
-        
-        // Функция для инкремента и получения счёта
-        async function updateCounter() {
-            const apiUrl = `https://api.counterapi.dev/v1/counter/${WORKSPACE}/${COUNTER_NAME}/up`;  // Endpoint для +1
-            
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',  // Или GET для простого чтения, но up инкрементит
-                    headers: {
-                        'Content-Type': 'application/json',
-                        // Если нужен API-ключ: 'Authorization': `Bearer YOUR_API_KEY`
-                    }
-                });
-                
-                if (response.ok) {
-                    const result = await response.json();
-                    const count = result.data.value || result.data;  // Значение счётчика
-                    document.getElementById('views').innerText = `Просмотров страницы: ${count}`;
-                    console.log(`Счётчик обновлён: ${count}`);
-                } else {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-            } catch (error) {
-                console.error('Ошибка CounterAPI:', error.message);
-                document.getElementById('views').innerText = 'Ошибка загрузки счётчика';
-            }
-        }
-        
-        // Вызов при загрузке страницы (инкремент + отображение)
-        window.addEventListener('load', updateCounter);
-        
-        // Опционально: Обновление каждые 30 сек для реал-тайм (но не переусердствуйте — лимит 1000/день)
-        // setInterval(updateCounter, 30000);
-    </script>
-	
-	</div>
-
 
     <!-- Подключение маршрутов -->
     <script src="routes.js" type="module"></script>
@@ -68,6 +25,7 @@
 </body>
 
 </html>
+
 
 
 
