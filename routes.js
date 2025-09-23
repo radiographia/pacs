@@ -45,10 +45,7 @@ function createStaticMenu() {
 function createStaticFooter() {
     footerDiv.innerHTML = `
         <p>&copy; 2025 Radiographia. Все права защищены.</p>
-		<p>
-		 <a href='http://www.freevisitorcounters.com'>at Freevisitorcounters.com</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=d68073e5b14f79aed9d5c0beaa6f618d24286661'></script>
-<script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1394583/t/3"></script>
-		</p>
+
     `;
 }
 
@@ -207,6 +204,7 @@ window.addEventListener('DOMContentLoaded', () => {
     handleHashChange();
 });
 window.addEventListener('hashchange', handleHashChange);
+
 
 
 
