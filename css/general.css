@@ -159,6 +159,18 @@ h1 {
 
 }
 
+#counter {
+    display: flex;
+    align-items: center; /* Центрируем по горизонтали */
+    justify-content: center; /* Центрируем по вертикали */
+    background-color: #f8f8f8; /* Светлый фон */
+    border-top: 5px solid #ddd; /* Легкая граница сверху */
+    font-size: 14px;
+    color: #333;
+	text-align: center;
+}
+
+
 
 
 
