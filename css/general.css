@@ -165,13 +165,14 @@ h1 {
     align-items: center; /* Центрируем по горизонтали */
     justify-content: center; /* Центрируем по вертикали */
     background-color: #f8f8f8; /* Светлый фон */
-    border-top: 1px solid #ddd; /* Легкая граница сверху */
+    /*border-top: 1px solid #ddd; /* Легкая граница сверху */
 	padding-bottom: 10px;
-	padding-top: 10px;
+	/*padding-top: 10px;*/
     font-size: 14px;
     color: #333;
 	text-align: center;
 }
+
 
 
 
