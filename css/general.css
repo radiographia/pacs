@@ -146,6 +146,7 @@ h1 {
 
 #footer {
     display: flex;
+	min-height: 50px;
     flex-direction: column; /* Размещаем элементы в колонку */
     align-items: center; /* Центрируем по горизонтали */
     justify-content: center; /* Центрируем по вертикали */
@@ -171,6 +172,7 @@ h1 {
     color: #333;
 	text-align: center;
 }
+
 
 
 
