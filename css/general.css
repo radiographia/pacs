@@ -151,7 +151,8 @@ h1 {
     align-items: center; /* Центрируем по горизонтали */
     justify-content: center; /* Центрируем по вертикали */
     width: 100%;
-    padding: 20px;
+    padding-top: 10px;
+	padding-bottom: 10px;
     background-color: #f8f8f8; /* Светлый фон */
     border-top: 1px solid #ddd; /* Легкая граница сверху */
     font-size: 14px;
@@ -172,6 +173,7 @@ h1 {
     color: #333;
 	text-align: center;
 }
+
 
 
 
