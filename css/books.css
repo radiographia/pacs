@@ -18,7 +18,7 @@ header::before {
     top: 0; left: 0;
     width: 100%;
     height: 100%;
-	background: rgba(255,0,0,.25);
+	background: rgba(255,0,0,.75);
     z-index: 1;
     pointer-events: none;
 }
@@ -32,7 +32,7 @@ header::after {
 	background-image: url("../img/books.png");
     background-repeat: repeat-x;
     background-position: top center;
-    opacity: 0.15;
+    opacity: 0.5;
     z-index: 2;
     pointer-events: none;
 }
@@ -48,13 +48,8 @@ header > * {
             padding: 0px;
 			height: 100%;
 				width: 100%;
-            /*height: 100vh;*/
-            /*max-width: 800px;*/
             margin: 0px auto;
-			/*min-height: 100vh;
-            /*background: #fff;*/
             border-radius: 5px;
-            /*box-shadow: 0 2px 5px rgba(255, 255, 255, 0.5);*/
         }
 
 
@@ -70,9 +65,10 @@ iframe { width: 100%; height: 100%; border: 1px solid #ccc; }
 
 h1 {
 	display: inline;
-  background: rgba(0,0,0,.5);             /* цвет маркера */
-  padding: 0 2px;                 /* небольшой отступ, как у выделителя */
+  background: rgba(0,0,0,.5);
+  padding: 0 2px;
 }
+
 
 
 
