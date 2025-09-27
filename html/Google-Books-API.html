@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Books API</title>
+	 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4; /* Светлый фон страницы */
+            color: #333; /* Темный цвет текста */
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .results-container {
+            max-height: 10000px; /* Установите начальную высоту здесь */
+            overflow-y: auto; /* Добавляет прокрутку, если содержимое превышает высоту */
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #fff; /* Светлый фон контейнера с результатами */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Легкая тень для контейнера */
+            margin-bottom: 20px;
+        }
+        .book {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+        }
+        .book img {
+            max-width: 100px;
+            margin-right: 20px;
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .pagination button {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="search-container">
+        <input type="text" id="query" placeholder="Enter book title or author" />
+        <button onclick="searchBooks()">Search</button>
+    </div>
+    <div id="results" class="results-container"></div>
+    <div class="pagination">
+        <button id="prevPage" onclick="changePage(-1)" disabled>Previous</button>
+        <button id="nextPage" onclick="changePage(1)" disabled>Next</button>
+    </div>
+
+    <script>
+        let startIndex = 0;
+        const maxResults = 10; // Number of results per page
+
+        // Function to add a small delay for height adjustment
+        function applyHeightDelay() {
+            setTimeout(() => {
+                // Perform any actions needed after the height adjustment here
+            }, 100); // Delay to allow for height adjustment
+        }
+
+        async function searchBooks() {
+            const query = document.getElementById('query').value;
+            const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&startIndex=${startIndex}&maxResults=${maxResults}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const resultsContainer = document.getElementById('results');
+                resultsContainer.innerHTML = ''; // Clear previous results
+
+                if (data.items) {
+                    data.items.forEach(item => {
+                        const book = item.volumeInfo;
+                        const bookElement = document.createElement('div');
+                        bookElement.classList.add('book');
+
+                        const title = book.title || 'No title';
+                        const authors = book.authors ? book.authors.join(', ') : 'No authors';
+                        const publishedDate = book.publishedDate ? book.publishedDate.split('-')[0] : 'No date';
+                        const thumbnail = book.imageLinks ? book.imageLinks.thumbnail : 'https://via.placeholder.com/100x150';
+
+                        bookElement.innerHTML = `
+                            <img src="${thumbnail}" alt="${title}" />
+                            <div>
+                                <h2>${title}</h2>
+                                <p><strong>Authors:</strong> ${authors}</p>
+                                <p><strong>Published Year:</strong> ${publishedDate}</p>
+                                <p><strong>Description:</strong> ${book.description || 'No description'}</p>
+                            </div>
+                        `;
+
+                        resultsContainer.appendChild(bookElement);
+                    });
+
+                    // Update pagination buttons
+                    document.getElementById('prevPage').disabled = startIndex === 0;
+                    document.getElementById('nextPage').disabled = (startIndex + maxResults) >= data.totalItems;
+
+                    // Apply height delay
+                    applyHeightDelay();
+                } else {
+                    resultsContainer.innerHTML = '<p>No results found.</p>';
+                    document.getElementById('prevPage').disabled = true;
+                    document.getElementById('nextPage').disabled = true;
+                }
+            } catch (error) {
+                console.error('Error fetching books:', error);
+                document.getElementById('results').innerHTML = '<p>Error fetching books.</p>';
+                document.getElementById('prevPage').disabled = true;
+                document.getElementById('nextPage').disabled = true;
+            }
+        }
+
+        function changePage(direction) {
+            startIndex += direction * maxResults;
+            searchBooks();
+        }
+    </script>
+</body>
+</html>
+
+
