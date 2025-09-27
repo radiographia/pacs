@@ -8,7 +8,7 @@
 /* Подключение шрифта */
 @font-face {
     font-family: 'FontContent';
-    src: url('/fonts/RobotoFlex-Regular.ttf') format('truetype');
+    src: url('fonts/RobotoFlex-Regular.ttf') format('truetype');
 }
 
 /* Базовые стили */
@@ -195,4 +195,5 @@ h1 {
         position: static;
         width: 100%;
     }
+
 }*/
