@@ -23,7 +23,7 @@ const loadedStyles = new Set();
  */
 function createStaticMenu() {
     menuDiv.innerHTML = `
-        <img id="logo" src="/img/logo.jpg" alt="Логотип сайта">
+        <img id="logo" src="img/logo.jpg" alt="Логотип сайта">
         <nav>
             <ul class="nav-menu">
                 <li class="dropdown" id="sections-dropdown">
@@ -269,4 +269,5 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 window.addEventListener('hashchange', handleHashChange);
+
 
