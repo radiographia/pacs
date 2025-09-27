@@ -4,6 +4,7 @@ const routes = {
 	'#/books': { path: 'html/books.html', name: 'Книги' },
 };
 
+
 // DOM-элементы
 const menuDiv = document.getElementById("menu");
 const contentDiv = document.getElementById("content");
@@ -13,13 +14,11 @@ if (!menuDiv || !contentDiv || !footerDiv) {
     console.error("Ошибка: не найден элемент с id 'menu', 'content' или 'footer'.");
 }
 
-let isHighlightLoaded = false;
-
 // Хранилище подключённых стилей
 const loadedStyles = new Set();
 
 /**
- * Создает статическое меню.
+ * Создаёт статическое меню.
  */
 function createStaticMenu() {
     menuDiv.innerHTML = `
@@ -45,10 +44,6 @@ function createStaticMenu() {
 /**
  * Инициализирует поведение выпадающего меню.
  */
-
-/**
- * Инициализирует поведение выпадающего меню.
- */
 function initDropdown() {
     const dropdown = document.getElementById('sections-dropdown');
     if (!dropdown) return;
@@ -61,7 +56,6 @@ function initDropdown() {
     function showMenu() {
         clearTimeout(closeTimeout);
 
-        // Временно делаем меню видимым для измерения, но невидимым визуально
         menu.style.visibility = 'hidden';
         menu.style.display = 'block';
         menu.style.left = '0';
@@ -70,7 +64,6 @@ function initDropdown() {
         const menuWidth = menu.offsetWidth;
         const dropdownRect = dropdown.getBoundingClientRect();
         const viewportWidth = document.documentElement.clientWidth;
-
         const wouldBeRight = dropdownRect.left + menuWidth;
 
         if (wouldBeRight > viewportWidth) {
@@ -81,10 +74,8 @@ function initDropdown() {
             menu.style.right = 'auto';
         }
 
-        // Делаем меню видимым
         menu.style.visibility = 'visible';
         menu.style.display = 'block';
-
         isOpen = true;
     }
 
@@ -118,12 +109,11 @@ function initDropdown() {
 }
 
 /**
- * Создает статический футер.
+ * Создаёт статический футер.
  */
 function createStaticFooter() {
     footerDiv.innerHTML = `
         <p>&copy; 2025 Radiographia. Все права защищены.</p>
-		<p><img src="https://hits.sh/radiographia.github.io/pacs.svg" alt="Hits"/></p>
     `;
 }
 
@@ -136,18 +126,27 @@ function generateMenu(activePath) {
     });
 }
 
-function removeOldStyles() {
+/**
+ * Удаляет старые динамические стили и скрипты.
+ */
+function cleanupDynamicAssets() {
+    // Удаляем старые динамические стили (кроме защищённых)
     document.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
         const href = link.getAttribute('href');
         if (
             href &&
-            !href.includes('general.css') && // Сохраняем general.css
-            !href.includes('highlight.js') && // Сохраняем стили Highlight.js
-            !link.hasAttribute('data-keep') // Сохраняем стили с атрибутом data-keep
+            !href.includes('general.css') &&
+            !href.includes('highlight.js') &&
+            !link.hasAttribute('data-keep')
         ) {
             link.remove();
             loadedStyles.delete(href);
         }
+    });
+
+    // Удаляем динамически добавленные скрипты
+    document.querySelectorAll('script[data-dynamic]').forEach(script => {
+        script.remove();
     });
 }
 
@@ -161,13 +160,25 @@ function addStyles(tempDiv) {
             const styleLink = document.createElement('link');
             styleLink.rel = 'stylesheet';
             styleLink.href = href;
+            styleLink.setAttribute('data-dynamic', 'true');
 
             document.head.appendChild(styleLink);
             loadedStyles.add(href);
 
             return new Promise((resolve, reject) => {
-                styleLink.onload = () => resolve(href);
-                styleLink.onerror = () => reject(`Ошибка загрузки стиля: ${href}`);
+                const timeout = setTimeout(() => {
+                    console.warn(`Таймаут загрузки стиля: ${href}`);
+                    resolve(href); // не ломаем загрузку при медленной сети
+                }, 5000);
+
+                styleLink.onload = () => {
+                    clearTimeout(timeout);
+                    resolve(href);
+                };
+                styleLink.onerror = () => {
+                    clearTimeout(timeout);
+                    reject(`Ошибка загрузки стиля: ${href}`);
+                };
             });
         }
         return Promise.resolve();
@@ -176,19 +187,17 @@ function addStyles(tempDiv) {
 }
 
 /**
- * Загружает и отображает контент по маршруту.
+ * Скрывает контент.
  */
 function hideContent() {
-    contentDiv.style.visibility = 'hidden';
-    contentDiv.style.position = 'absolute';
+    contentDiv.style.display = 'none';
 }
 
 /**
  * Показывает контент.
  */
 function showContent() {
-    contentDiv.style.visibility = 'visible';
-    contentDiv.style.position = 'relative';
+    contentDiv.style.display = ''; // возвращает значение по умолчанию
 }
 
 /**
@@ -207,17 +216,24 @@ async function loadContent(path) {
             if (!response.ok) throw new Error(`Ошибка загрузки: ${route.path}`);
 
             const html = await response.text();
-            contentDiv.innerHTML = html;
-            removeOldStyles();
 
+            // Создаём временный контейнер для анализа
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = html;
 
+            // Очищаем старые динамические ресурсы
+            cleanupDynamicAssets();
+
+            // Загружаем стили ДО вставки контента в DOM
             await addStyles(tempDiv);
 
-            // Подключаем все скрипты, если есть
+            // Вставляем контент ТОЛЬКО после загрузки стилей
+            contentDiv.innerHTML = html;
+
+            // Подключаем скрипты
             tempDiv.querySelectorAll('script').forEach(script => {
                 const newScript = document.createElement('script');
+                newScript.setAttribute('data-dynamic', 'true');
                 if (script.src) {
                     newScript.type = 'module';
                     newScript.src = script.src;
@@ -263,13 +279,9 @@ function handleHashChange() {
  */
 window.addEventListener('DOMContentLoaded', () => {
     createStaticMenu();
-    initDropdown(); // ← Инициализация выпадающего меню
+    initDropdown();
     createStaticFooter();
     handleHashChange();
 });
 
-
 window.addEventListener('hashchange', handleHashChange);
-
-
-
