@@ -1,10 +1,7 @@
 const routes = {
-    '#/main': { path: '/main.html', name: 'Главная' },
-    '#/dicom': { path: '/dicom.html', name: 'Коллекция' },
-    '#/main1': { path: '/main.html', name: 'Главная1' },
-    '#/dicom1': { path: '/dicom.html', name: 'Коллекция1' },
-    '#/main2': { path: '/main.html', name: 'Главная2' },
-    '#/dicom2': { path: '/dicom.html', name: 'Коллекция2-we114' },	
+    '#/main': { path: 'main.html', name: 'Главная' },
+    '#/dicom': { path: 'dicom.html', name: 'Коллекция' },
+	'#/books': { path: 'books.html', name: 'Книги' },
 };
 
 // DOM-элементы
@@ -269,5 +266,6 @@ window.addEventListener('DOMContentLoaded', () => {
     createStaticFooter();
     handleHashChange();
 });
+
 
 window.addEventListener('hashchange', handleHashChange);
