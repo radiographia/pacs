@@ -52,13 +52,14 @@ header > * {
         }
 
 
-iframe { min-width: 100vw; height: 100%; border: 5px solid black; }
+iframe { min-width: 100vw; height: 100%; }
 
 h1 {
 	display: inline;
   background: rgba(0,0,0,.25);             /* цвет маркера */
   padding: 0 2px;                 /* небольшой отступ, как у выделителя */
 }
+
 
 
 
