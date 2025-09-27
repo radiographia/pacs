@@ -114,6 +114,7 @@ function initDropdown() {
 function createStaticFooter() {
     footerDiv.innerHTML = `
         <p>&copy; 2025 Radiographia. Все права защищены.</p>
+		<p><img src="https://hits.sh/radiographia.github.io/pacs.svg" alt="Hits"/></p>
     `;
 }
 
@@ -285,3 +286,4 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('hashchange', handleHashChange);
+
