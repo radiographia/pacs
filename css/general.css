@@ -18,9 +18,9 @@ html {
 
 html, body {
     font-family: 'FontContent', sans-serif;
-    min-height: 100vh;
-	/*height: 100%;
-	width: 100%;*/
+    
+	height: 100%;
+	width: 100%;
 }
 
 body {
@@ -201,6 +201,7 @@ h1 {
     }
 
 }*/
+
 
 
 
