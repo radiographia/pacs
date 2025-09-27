@@ -1,0 +1,198 @@
+/* Сброс стилей */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Подключение шрифта */
+@font-face {
+    font-family: 'FontContent';
+    src: url('/fonts/RobotoFlex-Regular.ttf') format('truetype');
+}
+
+/* Базовые стили */
+html {
+    overflow-y: scroll; /* Всегда показываем вертикальную полосу прокрутки */
+}
+
+html, body {
+    font-family: 'FontContent', sans-serif;
+    min-height: 100vh;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+#content.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Меню */
+#menu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    background-color: #000;
+    flex-wrap: wrap;
+    z-index: 1;
+}
+
+#menu .fake {
+	
+    position: absolute;
+	display: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,0, 0, 0.25); /* Второй цвет */
+    /*mix-blend-mode: screen;*/
+    pointer-events: none; /* Позволяет клики через слой */
+	justify-content: center;
+	align-items: center;
+	z-index: 2;
+	
+}
+
+#logo {
+    width: 50px;
+    height: 50px;
+    margin-right: 20px;
+    z-index: 3;
+}
+
+#rad {
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 2em;
+    font-weight: bold;
+}
+
+/* Навигация */
+nav {
+    z-index: 3;
+}
+
+
+
+.nav-menu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    display: block;
+    padding: 10px 16px;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    /*background: #000;*/
+	background: transparent;
+	color: white;
+    border: 1px solid #ccc;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    z-index: 3;
+    white-space: nowrap;
+    display: none;
+}
+
+
+.dropdown-menu::after {
+	content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5); /* Второй цвет */
+    pointer-events: none; /* Позволяет клики через слой */
+	z-index: -1;
+}	
+
+
+.dropdown-menu a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: white;
+}
+
+.dropdown-menu a:hover {
+    background-color:  rgba(255,0,0);
+}
+
+
+h1 {
+	display: inline;
+}
+
+#footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-top: 1px solid #ddd;
+    font-size: 14px;
+    color: #333;
+    text-align: center;
+}
+
+/* Адаптивность */
+/*@media (max-width: 600px) {
+    #menu {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    #logo {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .nav-menu {
+        flex-direction: column;
+        width: 100%;
+    }
+    .nav-menu > li {
+        width: 100%;
+    }
+    nav li a {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+    .dropdown-menu {
+        position: static;
+        width: 100%;
+    }
+}*/
