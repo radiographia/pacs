@@ -47,23 +47,19 @@ header > * {
 			margin: 20px;
             padding: 0px;
 			height: 100%;
-            /*max-width: 800px;*/
-			widht: 100px;
+          	widht: 100px;
             margin: 0px auto;
-			/*min-height: 100vh;
-            /*background: #fff;*/
-            /*border-radius: 5px;*/
-            /*box-shadow: 0 2px 5px rgba(255, 255, 255, 0.5);*/
         }
 
 
-iframe { width: 100%; height: 100%; border: 1px solid #ccc; }
+iframe { width: 100%; height: 100%; }
 
 h1 {
 	display: inline;
   background: rgba(0,0,0,.25);             /* цвет маркера */
   padding: 0 2px;                 /* небольшой отступ, как у выделителя */
 }
+
 
 
 
