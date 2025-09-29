@@ -8,10 +8,97 @@
   <h2>Тестовое видео</h2>
   <video src="Brogimaros--Head_Brain.mp4" controls width="600" style="background:#000"></video>
   <p>Если видео не грузится — проверьте консоль (F12).</p>
-  <script>
-    const v = document.querySelector('video');
-    v.addEventListener('error', () => console.error('Видео не загружено!'));
-    v.addEventListener('loadedmetadata', () => console.log('Видео готово'));
-  </script>
+
+<script>
+  const video = document.getElementById('video');
+  const frameNumEl = document.getElementById('frameNum');
+  const totalFramesEl = document.getElementById('totalFrames');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const playPauseBtn = document.getElementById('playPause');
+
+  // Правильный путь (вы уже подтвердили, что он рабочий)
+  video.src = '/pacs/dicom/Brogimaros--Head_Brain.mp4';
+
+  let totalFrames = 0;
+  const SECONDS_PER_FRAME = 10;
+
+  // Обработчик метаданных
+  video.addEventListener('loadedmetadata', () => {
+    // Проверяем, что duration — валидное число
+    if (isFinite(video.duration) && video.duration > 0) {
+      totalFrames = Math.floor(video.duration / SECONDS_PER_FRAME);
+      totalFramesEl.textContent = totalFrames;
+      updateFrameDisplay();
+    } else {
+      // Если duration ещё не готов — подождём
+      const checkDuration = () => {
+        if (isFinite(video.duration) && video.duration > 0) {
+          totalFrames = Math.floor(video.duration / SECONDS_PER_FRAME);
+          totalFramesEl.textContent = totalFrames;
+          updateFrameDisplay();
+          video.removeEventListener('timeupdate', checkDuration);
+        }
+      };
+      video.addEventListener('timeupdate', checkDuration);
+    }
+  });
+
+  function updateFrameDisplay() {
+    if (totalFrames <= 0) return;
+    const currentFrame = Math.min(
+      Math.floor(video.currentTime / SECONDS_PER_FRAME),
+      totalFrames - 1
+    );
+    frameNumEl.textContent = currentFrame + 1;
+  }
+
+  function goToFrame(frameIndex) {
+    if (totalFrames <= 0) return;
+    frameIndex = Math.max(0, Math.min(frameIndex, totalFrames - 1));
+    video.currentTime = frameIndex * SECONDS_PER_FRAME;
+    updateFrameDisplay();
+  }
+
+  video.addEventListener('timeupdate', updateFrameDisplay);
+
+  prevBtn.addEventListener('click', () => {
+    const currentFrame = Math.floor(video.currentTime / SECONDS_PER_FRAME);
+    goToFrame(currentFrame - 1);
+  });
+
+  nextBtn.addEventListener('click', () => {
+    const currentFrame = Math.floor(video.currentTime / SECONDS_PER_FRAME);
+    goToFrame(currentFrame + 1);
+  });
+
+  playPauseBtn.addEventListener('click', () => {
+    if (video.paused) {
+      video.play().catch(e => console.warn("Autoplay blocked:", e));
+      playPauseBtn.textContent = '⏸️ Pause (Space)';
+    } else {
+      video.pause();
+      playPauseBtn.textContent = '▶️ Play (Space)';
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      e.preventDefault();
+      playPauseBtn.click();
+    } else if (e.code === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+      e.preventDefault();
+      prevBtn.click();
+    } else if (e.code === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+      e.preventDefault();
+      nextBtn.click();
+    }
+  });
+
+  // Загружаем видео
+  video.preload = 'auto';
+  video.load();
+</script>
+  
 </body>
 </html>
