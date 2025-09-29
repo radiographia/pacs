@@ -11,7 +11,92 @@
     </div>
     <div class="video-wrapper">
       <!-- Второй блок — можно оставить пустым или добавить контент -->
+  <video id="video" controls preload="auto"></video>
+  <div class="controls">
+    <button id="prev">← Prev (A)</button>
+    <button id="playPause">⏸️ Pause (Space)</button>
+    <button id="next">Next → (D)</button>
+    <span>Frame: <span id="frameNum">0</span> / <span id="totalFrames">0</span></span>
+  </div>
+  <div class="info">
+    <p>• Use A/D or ←/→ to navigate frame-by-frame</p>
+    <p>• Video is fully loaded into browser memory for instant seek</p>
+    <p>• Each frame = 10 seconds (as per your original requirement)</p>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const frameNumEl = document.getElementById('frameNum');
+    const totalFramesEl = document.getElementById('totalFrames');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const playPauseBtn = document.getElementById('playPause');
+
+    // Укажите путь к вашему MP4-файлу (должен быть на том же домене или с CORS)
+    video.src = 'dicom/Brogimaros--Head^Brain.mp4'; // ← ЗАМЕНИТЕ НА ВАШ ФАЙЛ
+
+    let totalFrames = 0;
+    const SECONDS_PER_FRAME = 10; // как в вашем первом варианте
+
+    video.addEventListener('loadedmetadata', () => {
+      totalFrames = Math.floor(video.duration / SECONDS_PER_FRAME);
+      totalFramesEl.textContent = totalFrames;
+      updateFrameDisplay();
+    });
+
+    function updateFrameDisplay() {
+      const currentFrame = Math.floor(video.currentTime / SECONDS_PER_FRAME);
+      frameNumEl.textContent = currentFrame + 1;
+    }
+
+    function goToFrame(frameIndex) {
+      if (frameIndex < 0) frameIndex = 0;
+      if (frameIndex >= totalFrames) frameIndex = totalFrames - 1;
+      video.currentTime = frameIndex * SECONDS_PER_FRAME;
+      updateFrameDisplay();
+    }
+
+    video.addEventListener('timeupdate', updateFrameDisplay);
+
+    prevBtn.addEventListener('click', () => {
+      const currentFrame = Math.floor(video.currentTime / SECONDS_PER_FRAME);
+      goToFrame(currentFrame - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const currentFrame = Math.floor(video.currentTime / SECONDS_PER_FRAME);
+      goToFrame(currentFrame + 1);
+    });
+
+    playPauseBtn.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        playPauseBtn.textContent = '⏸️ Pause (Space)';
+      } else {
+        video.pause();
+        playPauseBtn.textContent = '▶️ Play (Space)';
+      }
+    });
+
+    // Управление с клавиатуры
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        playPauseBtn.click();
+      } else if (e.code === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        e.preventDefault();
+        prevBtn.click();
+      } else if (e.code === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        e.preventDefault();
+        nextBtn.click();
+      }
+    });
+
+    // Гарантируем полную загрузку (браузер сам закеширует при preload="auto")
+    video.preload = 'auto';
+            
     </div>
   </div>
 
 </main>
+
