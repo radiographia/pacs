@@ -2,6 +2,7 @@ const routes = {
     '#/main': { path: 'html/main.html', name: 'Главная' },
     '#/dicom': { path: 'html/dicom.html', name: 'Коллекция' },
 	'#/books': { path: 'html/books.html', name: 'Книги' },
+	'#/rutube': { path: 'html/books.html', name: 'RuTube Series' },
 };
 
 
@@ -286,4 +287,5 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('hashchange', handleHashChange);
+
 
