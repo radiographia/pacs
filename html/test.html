@@ -1,104 +1,197 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Test Video</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DICOM Frame Player</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .player-container {
+      width: 100%;
+      max-width: 1000px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    video {
+      width: 100%;
+      background: #000;
+      border-radius: 8px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      background: rgba(30, 30, 30, 0.7);
+      border-radius: 8px;
+    }
+    button {
+      padding: 10px 16px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      background: #1a73e8;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover {
+      background: #0d5bbd;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .frame-info {
+      font-size: 16px;
+      font-weight: 500;
+      min-width: 120px;
+      text-align: center;
+    }
+    .instructions {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #aaa;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .loading {
+      color: #ffcc00;
+      font-style: italic;
+    }
+  </style>
 </head>
 <body>
-  <h2>Тестовое видео</h2>
-  <video src="Brogimaros--Head_Brain.mp4" controls width="600" style="background:#000"></video>
-  <p>Если видео не грузится — проверьте консоль (F12).</p>
+  <div class="player-container">
+    <video id="video" controls preload="auto"></video>
 
-<script>
-  const video = document.getElementById('video');
-  const frameNumEl = document.getElementById('frameNum');
-  const totalFramesEl = document.getElementById('totalFrames');
-  const prevBtn = document.getElementById('prev');
-  const nextBtn = document.getElementById('next');
-  const playPauseBtn = document.getElementById('playPause');
+    <div class="controls">
+      <button id="prev">← Prev (A)</button>
+      <button id="playPause">⏸️ Pause (Space)</button>
+      <button id="next">Next → (D)</button>
+      <div class="frame-info">
+        Frame: <span id="frameNum" class="loading">—</span> / <span id="totalFrames" class="loading">—</span>
+      </div>
+    </div>
 
-  // Правильный путь (вы уже подтвердили, что он рабочий)
-  video.src = '/pacs/dicom/Brogimaros--Head_Brain.mp4';
+    <div class="instructions">
+      • Use ←/→ or A/D for frame-by-frame navigation<br>
+      • Each frame is displayed for 10 seconds (as in original DICOM sequence)<br>
+      • Video is fully cached in browser for instant seek
+    </div>
+  </div>
 
-  let totalFrames = 0;
-  const SECONDS_PER_FRAME = 10;
+  <script>
+    const video = document.getElementById('video');
+    const frameNumEl = document.getElementById('frameNum');
+    const totalFramesEl = document.getElementById('totalFrames');
+    const prevBtn = document.getElementById('prev');
+    const nextBtn = document.getElementById('next');
+    const playPauseBtn = document.getElementById('playPause');
 
-  // Обработчик метаданных
-  video.addEventListener('loadedmetadata', () => {
-    // Проверяем, что duration — валидное число
-    if (isFinite(video.duration) && video.duration > 0) {
-      totalFrames = Math.floor(video.duration / SECONDS_PER_FRAME);
-      totalFramesEl.textContent = totalFrames;
+    // 🔴 УКАЖИТЕ ПРАВИЛЬНЫЙ ПУТЬ К ВАШЕМУ ВИДЕО
+    video.src = '/pacs/dicom/Brogimaros--Head_Brain.mp4';
+
+    let totalFrames = 0;
+    const SECONDS_PER_FRAME = 10;
+
+    // Обновление отображения кадра
+    function updateFrameDisplay() {
+      if (totalFrames <= 0) return;
+      const currentFrame = Math.min(
+        Math.floor(video.currentTime / SECONDS_PER_FRAME),
+        totalFrames - 1
+      );
+      frameNumEl.textContent = currentFrame + 1;
+      frameNumEl.classList.remove('loading');
+    }
+
+    // Переход к кадру
+    function goToFrame(frameIndex) {
+      if (totalFrames <= 0) return;
+      frameIndex = Math.max(0, Math.min(frameIndex, totalFrames - 1));
+      video.currentTime = frameIndex * SECONDS_PER_FRAME;
       updateFrameDisplay();
-    } else {
-      // Если duration ещё не готов — подождём
-      const checkDuration = () => {
-        if (isFinite(video.duration) && video.duration > 0) {
-          totalFrames = Math.floor(video.duration / SECONDS_PER_FRAME);
-          totalFramesEl.textContent = totalFrames;
-          updateFrameDisplay();
-          video.removeEventListener('timeupdate', checkDuration);
-        }
-      };
-      video.addEventListener('timeupdate', checkDuration);
     }
-  });
 
-  function updateFrameDisplay() {
-    if (totalFrames <= 0) return;
-    const currentFrame = Math.min(
-      Math.floor(video.currentTime / SECONDS_PER_FRAME),
-      totalFrames - 1
-    );
-    frameNumEl.textContent = currentFrame + 1;
-  }
+    // Обработка метаданных
+    video.addEventListener('loadedmetadata', () => {
+      if (isFinite(video.duration) && video.duration > 0) {
+        totalFrames = Math.floor(video.duration / SECONDS_PER_FRAME);
+        totalFramesEl.textContent = totalFrames;
+        totalFramesEl.classList.remove('loading');
+        updateFrameDisplay();
+      } else {
+        const checkDuration = () => {
+          if (isFinite(video.duration) && video.duration > 0) {
+            totalFrames = Math.floor(video.duration / SECONDS_PER_FRAME);
+            totalFramesEl.textContent = totalFrames;
+            totalFramesEl.classList.remove('loading');
+            updateFrameDisplay();
+            video.removeEventListener('timeupdate', checkDuration);
+          }
+        };
+        video.addEventListener('timeupdate', checkDuration);
+      }
+    });
 
-  function goToFrame(frameIndex) {
-    if (totalFrames <= 0) return;
-    frameIndex = Math.max(0, Math.min(frameIndex, totalFrames - 1));
-    video.currentTime = frameIndex * SECONDS_PER_FRAME;
-    updateFrameDisplay();
-  }
+    // События
+    video.addEventListener('timeupdate', updateFrameDisplay);
 
-  video.addEventListener('timeupdate', updateFrameDisplay);
+    prevBtn.addEventListener('click', () => {
+      const currentFrame = Math.floor(video.currentTime / SECONDS_PER_FRAME);
+      goToFrame(currentFrame - 1);
+    });
 
-  prevBtn.addEventListener('click', () => {
-    const currentFrame = Math.floor(video.currentTime / SECONDS_PER_FRAME);
-    goToFrame(currentFrame - 1);
-  });
+    nextBtn.addEventListener('click', () => {
+      const currentFrame = Math.floor(video.currentTime / SECONDS_PER_FRAME);
+      goToFrame(currentFrame + 1);
+    });
 
-  nextBtn.addEventListener('click', () => {
-    const currentFrame = Math.floor(video.currentTime / SECONDS_PER_FRAME);
-    goToFrame(currentFrame + 1);
-  });
+    playPauseBtn.addEventListener('click', () => {
+      if (video.paused) {
+        video.play().catch(e => console.warn("Autoplay blocked:", e));
+        playPauseBtn.textContent = '⏸️ Pause (Space)';
+      } else {
+        video.pause();
+        playPauseBtn.textContent = '▶️ Play (Space)';
+      }
+    });
 
-  playPauseBtn.addEventListener('click', () => {
-    if (video.paused) {
-      video.play().catch(e => console.warn("Autoplay blocked:", e));
-      playPauseBtn.textContent = '⏸️ Pause (Space)';
-    } else {
-      video.pause();
-      playPauseBtn.textContent = '▶️ Play (Space)';
-    }
-  });
+    // Управление с клавиатуры
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        playPauseBtn.click();
+      } else if (e.code === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        e.preventDefault();
+        prevBtn.click();
+      } else if (e.code === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        e.preventDefault();
+        nextBtn.click();
+      }
+    });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.code === 'Space') {
-      e.preventDefault();
-      playPauseBtn.click();
-    } else if (e.code === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-      e.preventDefault();
-      prevBtn.click();
-    } else if (e.code === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-      e.preventDefault();
-      nextBtn.click();
-    }
-  });
-
-  // Загружаем видео
-  video.preload = 'auto';
-  video.load();
-</script>
-  
+    // Запуск загрузки
+    video.preload = 'auto';
+    video.load();
+  </script>
 </body>
 </html>
