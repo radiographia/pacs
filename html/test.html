@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Test Video</title>
+</head>
+<body>
+  <h2>Тестовое видео</h2>
+  <video src="Brogimaros--Head_Brain.mp4" controls width="600" style="background:#000"></video>
+  <p>Если видео не грузится — проверьте консоль (F12).</p>
+  <script>
+    const v = document.querySelector('video');
+    v.addEventListener('error', () => console.error('Видео не загружено!'));
+    v.addEventListener('loadedmetadata', () => console.log('Видео готово'));
+  </script>
+</body>
+</html>
