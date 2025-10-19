@@ -3,6 +3,7 @@ const routes = {
     '#/dicom': { path: 'html/dicom.html', name: 'Коллекция' },
 	'#/books': { path: 'html/books.html', name: 'Книги' },
 	'#/rutube': { path: 'html/rutube.html', name: 'RuTube Series' },
+	'#/atlas': { path: 'html/atlas/atlas.html', name: 'MRI Atlas of the Brain' },
 };
 
 
@@ -287,6 +288,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('hashchange', handleHashChange);
+
 
 
 
