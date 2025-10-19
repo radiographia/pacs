@@ -234,7 +234,7 @@ async function loadContent(path) {
             contentDiv.innerHTML = html;
 
             // Подключаем скрипты
-           /* tempDiv.querySelectorAll('script').forEach(script => {
+            tempDiv.querySelectorAll('script').forEach(script => {
                 const newScript = document.createElement('script');
                 newScript.setAttribute('data-dynamic', 'true');
                 if (script.src) {
@@ -245,7 +245,7 @@ async function loadContent(path) {
                     newScript.textContent = script.textContent;
                 }
                 document.body.appendChild(newScript);
-            });*/
+            });
 
             // Подсветка синтаксиса
             await new Promise(resolve => setTimeout(resolve, delay));
@@ -288,6 +288,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('hashchange', handleHashChange);
+
 
 
 
