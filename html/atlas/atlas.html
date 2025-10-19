@@ -1,13 +1,12 @@
 <link rel="stylesheet" type="text/css" href="css/atlas.css" />
-<script>
-  window.RufflePlayer = window.RufflePlayer || {};
-  window.RufflePlayer.config = {
-    // Путь ДО папки, где лежат ruffle.js, core.*.js, .wasm
-    // Должен заканчиваться на / !
-    publicPath: "js/ruffle/"
-  };
-</script>
-<script src="js/ruffle/ruffle.js"></script>
+  <!-- Настройка Ruffle: путь к библиотеке -->
+  <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+      publicPath: "js/ruffle/"  // ← путь от КОРНЯ САЙТА до папки с Ruffle
+    };
+  </script>
+  <script src="../js/ruffle/ruffle.js"></script>
   <!-- Flash content via Ruffle -->
   <div id="flash-container">
     <embed
