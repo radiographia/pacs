@@ -1,0 +1,28 @@
+<link rel="stylesheet" type="text/css" href="css/atlas.css" />
+  <!-- Настройка Ruffle: путь к библиотеке -->
+  <script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+      publicPath: "js/ruffle/"  // ← путь от КОРНЯ САЙТА до папки с Ruffle
+    };
+  </script>
+  <script src="js/ruffle/ruffle.js"></script>
+  <!-- Flash content via Ruffle -->
+  <div id="flash-container">
+    <embed
+      type="application/x-shockwave-flash"
+      src="allAtlas.swf"
+      width="100%"
+      height="100%"
+      quality="high"
+      bgcolor="#000000"
+      play="true"
+      loop="true"
+      wmode="window"
+      scale="showall"
+      menu="true"
+      salign=""
+      allowScriptAccess="sameDomain"
+    />
+  </div>
+
