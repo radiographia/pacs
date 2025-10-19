@@ -35,3 +35,16 @@
       background: rgba(60, 60, 60, 0.9);
     }
 
+
+#footer {
+  all: unset; /* или all: revert; */
+  background-color: #000;
+  color: #bbb;
+  padding: 1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  text-align: center;
+}
+    
+
+
