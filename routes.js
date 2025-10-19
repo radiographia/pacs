@@ -148,9 +148,9 @@ function cleanupDynamicAssets() {
     });
 
     // Удаляем динамически добавленные скрипты
-    //document.querySelectorAll('script[data-dynamic]').forEach(script => {
-    //    script.remove();
-    //});
+    document.querySelectorAll('script[data-dynamic]').forEach(script => {
+        script.remove();
+    });
 }
 
 /**
@@ -288,6 +288,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('hashchange', handleHashChange);
+
 
 
 
