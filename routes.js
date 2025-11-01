@@ -4,6 +4,7 @@ const routes = {
 	'#/books': { path: 'html/books.html', name: 'Книги' },
 	'#/rutube': { path: 'html/rutube.html', name: 'RuTube Series' },
 	'#/atlas': { path: 'atlas.html', name: 'MRI Atlas of the Brain' },
+	'#/chat': { path: 'chat.html', name: 'Трушный Чат' },
 };
 
 
@@ -288,6 +289,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('hashchange', handleHashChange);
+
 
 
 
